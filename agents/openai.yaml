@@ -1,0 +1,3 @@
+interface:
+  display_name: "琵琶曲人物替换"
+  short_description: "复用琵琶曲三十三段源片，完成换角提示词、生成复核与精确组装"
