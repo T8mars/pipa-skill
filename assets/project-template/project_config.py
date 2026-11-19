@@ -39,7 +39,11 @@ def file_signature(path):
 
 def require_current_reviews(root, rows):
     root = Path(root)
-    state = json.loads((root / 'rh_state.json').read_text(encoding='utf-8'))['tasks']
+    marker = root / 'channel.json'
+    provider = json.loads(marker.read_text(encoding='utf-8'))['provider'] if marker.exists() else 'rh'
+    if provider not in ('rh', 'chenyu', 'zhenzhen'):
+        raise ValueError('Unknown production channel')
+    state = json.loads((root / (provider + '_state.json')).read_text(encoding='utf-8'))['tasks']
     reviews = json.loads((root / '制作分析/生成复核/visual-reviews.json').read_text(encoding='utf-8'))
     for name, keep in rows:
         num = Path(name).stem

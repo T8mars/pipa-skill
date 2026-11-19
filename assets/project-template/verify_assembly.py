@@ -36,7 +36,10 @@ def main():
                     for packet in v.encode():c.mux(packet)
                 num=Path(name).stem;tasks[num]={'status':'SUCCESS','taskId':'synthetic-'+num}
                 reviews[num]={'status':'passed','taskId':tasks[num]['taskId'],'reviewed_retained_frames':[0,keep],**file_signature(path)}
-            (root/'rh_state.json').write_text(json.dumps({'tasks':tasks}),encoding='utf-8')
+            provider = 'chenyu' if rate == 12 else 'rh'
+            if provider == 'chenyu':
+                (root/'channel.json').write_text(json.dumps({'provider':provider}),encoding='utf-8')
+            (root/(provider+'_state.json')).write_text(json.dumps({'tasks':tasks}),encoding='utf-8')
             review_path=qa/'visual-reviews.json';review_path.write_text(json.dumps(reviews),encoding='utf-8')
             audio=root/'fixture.wav';samples=np.arange(round(audio_seconds*48000))/48000
             pcm=(np.sin(2*np.pi*440*samples)*12000).astype('<i2')

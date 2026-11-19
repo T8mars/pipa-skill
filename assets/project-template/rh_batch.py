@@ -516,6 +516,11 @@ def main():
     if len(sys.argv) < 2:
         raise SystemExit("用法: submit <段号...> | status | download")
     cmd = sys.argv[1]
+    from pathlib import Path
+    from channels import selected
+    if selected(Path(ROOT)) != 'rh':
+        import pipa_cloud
+        return pipa_cloud.run(sys.modules[__name__], sys.argv[1:])
     state = load_state()
     if cmd == "submit":
         cfg = app_config()
